@@ -1,0 +1,49 @@
+PYTHONS = ["python2.7", "python3.4", "pypy"]
+
+def colorize(text, color)
+  color_codes = {
+    :black    => 30,
+    :red      => 31,
+    :green    => 32,
+    :yellow   => 33,
+    :blue     => 34,
+    :magenta  => 35,
+    :cyan     => 36,
+    :white    => 37
+  }
+  code = color_codes[color]
+  if code == nil
+    text
+  else
+    "\033[#{code}m#{text}\033[0m"
+  end
+end
+
+def virtual_env(command, env="env")
+  sh "source #{env}/bin/activate && #{command}"
+end
+
+def create_virtual_env(dir, python)
+  sh "virtualenv #{dir} -p #{python}"
+end
+
+def run(command)
+  sh "#{command} ; true" # ignore errors
+end
+
+task :clean => [] do
+  sh "rm -rf env*/"
+  sh "rm -rf ~*"
+  sh "find . -name '*.pyc' -delete"
+end
+
+task :prepare => [] do
+  PYTHONS.each { |python|
+    puts colorize("Prepare #{python}", :yellow)
+    env = "env#{python.sub('python', '')}"
+    create_virtual_env("#{env}", "python")
+    virtual_env("pip install -r requirements.txt", "#{env}")
+  }
+end
+
+task :default => [:prepare]

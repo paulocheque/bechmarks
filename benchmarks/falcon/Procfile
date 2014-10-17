@@ -1,0 +1,5 @@
+#web: sh -c "cd benchmarks/falcon ; NEW_RELIC_CONFIG_FILE=../../newrelic.ini newrelic-admin run-program gunicorn run:app 0.0.0.0:$PORT -w 1 --log-file - ; cd -"
+
+#web: sh -c "cd benchmarks/falcon ; NEW_RELIC_CONFIG_FILE=../../newrelic.ini newrelic-admin run-program gunicorn run:app 0.0.0.0:$PORT --worker-class="egg:meinheld#gunicorn_worker" -w 1 --log-file - ; cd -"
+
+web: sh -c "cd benchmarks/falcon ; NEW_RELIC_CONFIG_FILE=../../newrelic.ini newrelic-admin run-program waitress-serve --port=$PORT run:app ; cd -"

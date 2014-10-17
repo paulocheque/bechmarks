@@ -1,0 +1,3 @@
+web: sh -c "cd benchmarks/django/cleanapp ; NEW_RELIC_CONFIG_FILE=../../../newrelic.ini newrelic-admin run-program gunicorn cleanapp.wsgi:application 0.0.0.0:$PORT -w 1 --log-file - ; cd -"
+
+#web: sh -c "cd benchmarks/django/cleanapp ; NEW_RELIC_CONFIG_FILE=../../../newrelic.ini newrelic-admin run-program waitress-serve --port=$PORT cleanapp.wsgi:application ; cd -"
